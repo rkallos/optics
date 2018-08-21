@@ -20,7 +20,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdatomic.h>
 #include <bsd/string.h>
 
 #include <sys/mman.h>
@@ -41,9 +40,6 @@ static_assert(
         sizeof(atomic_off_t) == sizeof(uint64_t),
         "if this fails then sucks to be you");
 
-typedef size_t optics_epoch_t; // 0 - 1 value.
-typedef atomic_size_t atomic_optics_epoch_t;
-
 static const size_t page_len = 4096UL;
 static const size_t cache_line_len = 64UL;
 
@@ -54,12 +50,6 @@ static const uint64_t version = 2;
 // -----------------------------------------------------------------------------
 // impl
 // -----------------------------------------------------------------------------
-
-struct optics_lens
-{
-    struct optics *optics;
-    struct lens *lens;
-};
 
 static void * optics_ptr(struct optics *optics, optics_off_t off, size_t len);
 static optics_off_t optics_alloc(struct optics *optics, size_t len);
